@@ -2,13 +2,13 @@ const routes: RouteConfig[] = [
   {
     key: 'Home',
     path: '/',
-    redirect: { to: '/demo?form=home' },
+    // redirect: { to: '/home?form=home' },
     windowOptions: {
-      title: 'App Home (redirect to demo)',
-      width: 1200,
+      title: 'MulsanneTiktok',
+      width: 450,
       height: 800,
-      minWidth: 800,
-      minHeight: 600,
+      minWidth: 450,
+      minHeight: 800,
     },
     createConfig: {
       showSidebar: true,

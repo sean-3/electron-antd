@@ -12,9 +12,7 @@ const config = {
   template: path.resolve(rootPath, 'app/src/index.html'),
   dist: path.resolve(rootPath, 'dist'),
   release: path.resolve(rootPath, 'release'),
-
   proxy: {},
-
   env,
 }
 

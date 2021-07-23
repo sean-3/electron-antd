@@ -1,0 +1,113 @@
+.record-wrapper {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  .record-screen {
+    width: 100%;
+    height: 100%;
+  }
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .video-preview {
+    width: 100%;
+    height: 100%;
+  }
+  .template-animate {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    &.recording .slick-dots.slick-thumb {
+      display: none !important;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+    }
+
+    ul.slick-dots.slick-thumb {
+      position: absolute;
+      box-sizing: content-box;
+      z-index: 99;
+      bottom: 10%;
+      right: 0;
+      width: 80px;
+      height: 60%;
+      padding: 30px 20px;
+      text-align: center;
+      li {
+        display: block;
+        height: 80px;
+        width: 80px;
+        margin: 20px 0 0 0;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        cursor: pointer;
+        &.slick-active {
+          border: 2px solid #ffc800;
+        }
+
+        a.template-item {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  .template-selector {
+    position: absolute;
+    // z-index: 99;
+    bottom: 10%;
+    right: 0;
+    height: 60%;
+    padding: 30px 20px;
+    text-align: center;
+    color: #ffc800;
+    .template-item {
+      height: 80px;
+      width: 80px;
+      margin: 20px 0 0 0;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      cursor: pointer;
+      &.selected {
+        border: 2px solid #ffc800;
+      }
+    }
+  }
+  .record-action {
+    position: absolute;
+    bottom: 10%;
+    left: 0;
+    z-index: 9;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .timer-wrapper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    h1 {
+      font-size: 100px;
+      color: #ffc800;
+      font-weight: bold;
+    }
+  }
+}

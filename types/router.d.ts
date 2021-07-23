@@ -36,6 +36,7 @@ declare global {
     hideMenus?: boolean
     /** 窗口创建完成回调 */
     created?: (win: BrowserWindow) => void
+    videosPath?: string
   }
 
   interface RouteQuery<Q = Record<string, unknown>> {

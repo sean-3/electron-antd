@@ -77,6 +77,9 @@ const webpackConfig: Configuration = {
             loader: 'less-loader',
             options: {
               lessOptions: {
+                modifyVars: {
+                  'primary-color': '#FFC800',
+                },
                 javascriptEnabled: true,
               },
             },

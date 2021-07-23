@@ -1,8 +1,5 @@
 import React from 'react'
 import $c from 'classnames'
-
-import { AppTitlebar, AppSidebar } from '../'
-
 import './app-layout.less'
 
 interface AppLayoutProps {
@@ -10,23 +7,13 @@ interface AppLayoutProps {
   children: JSX.Element
 }
 
-export class AppLayout extends React.Component<AppLayoutProps> {
-  render(): JSX.Element {
-    const { createConfig } = this.props
-    return (
-      <div
-        className={$c(
-          'flex app-layout',
-          { 'has-titlebar': createConfig.showTitlebar, 'has-sidebar': createConfig.showSidebar },
-          process.platform
-        )}
-      >
-        {createConfig.showSidebar ? <AppSidebar /> : null}
-        <div className="flex-1 app-content-wrap">
-          {createConfig.showTitlebar ? <AppTitlebar /> : null}
-          <div className="app-content">{this.props.children}</div>
-        </div>
+export const AppLayout: React.FC<AppLayoutProps> = (props: AppLayoutProps) => {
+  const { children } = props
+  return (
+    <div className={$c('flex app-layout', process.platform)}>
+      <div className="flex-1 app-content-wrap">
+        <div className="app-content">{children}</div>
       </div>
-    )
-  }
-} // class AppLayout end
+    </div>
+  )
+}

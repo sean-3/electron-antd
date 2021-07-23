@@ -1,5 +1,5 @@
 import path from 'path'
-import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron'
+import { BrowserWindow, BrowserWindowConstructorOptions, app } from 'electron'
 import { log } from '../log'
 import routes from '@/src/auto-routes'
 
@@ -101,6 +101,11 @@ export function createWindow(key: RouterKey, options: CreateWindowOptions = {}):
         }
       }
       resolve(win)
+    })
+
+    win.webContents.session.on('will-download', (event, item) => {
+      const filePath = path.join(app.getPath('documents'), `/mulsanne/${item.getFilename()}`)
+      item.setSavePath(filePath)
     })
 
     win.once('ready-to-show', () => {

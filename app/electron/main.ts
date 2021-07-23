@@ -1,5 +1,5 @@
-import { app, Tray } from 'electron'
-
+import { protocol, app, Tray } from 'electron'
+import path from 'path'
 import { creatAppTray } from './tray'
 
 $tools.log.info(`Application <${$tools.APP_NAME}> launched.`)
@@ -21,6 +21,10 @@ app.on('second-instance', () => {
 })
 
 app.on('ready', () => {
+  protocol.registerFileProtocol('atom', (request, callback) => {
+    const url = request.url.substr(7)
+    callback(decodeURI(path.normalize(url)))
+  })
   tray = creatAppTray()
   $tools.createWindow('Home')
 })
