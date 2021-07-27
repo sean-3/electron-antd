@@ -1,39 +1,61 @@
-.video-slider {
+.layout-padding {
+  display: flex;
+  flex-direction: column;
+  background-color: #000;
   height: 100%;
-  .slick-list {
-    height: 100%;
-    .slick-track {
-      height: 100%;
-      .slick-slide {
-        height: 100%;
-        & > div {
-          height: 100%;
-          .slider-item {
-            height: 100%;
-          }
-        }
+  width: 100%;
+  .banner-icon {
+    height: 360px;
+    padding: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .record-entry {
+    position: absolute;
+    right: 0;
+    top: 50%;
+  }
+  .video-slider {
+    width: 810px;
+    height: 1440px;
+    margin: 0 auto;
+    border-radius: 20px;
+    border: 5px #ffc800 solid;
+    .slick-list {
+      video {
+        border-radius: 20px;
       }
     }
   }
 }
-.record-entry {
-  position: fixed;
-  bottom: 20%;
-  left: 20px;
-  z-index: 9;
-}
 
 .ant-drawer-close {
   left: 0;
-  padding: 40px 20px;
+  padding: 60px 40px;
   .anticon-close > svg {
-    width: 24px;
-    height: 24px;
+    width: 60px;
+    height: 60px;
+    color: #fff;
   }
 }
 .ant-btn-primary,
 .ant-btn-primary:hover,
 .ant-btn-primary:focus {
   color: #000;
-  border-radius: 10px;
+}
+
+.ant-btn-lg {
+  height: 90px;
+  font-size: 32px;
+  padding: 0 40px;
+  border-radius: 20px;
+  &:hover {
+    border-radius: 20px;
+  }
+}
+.ant-btn > .anticon + span,
+.ant-btn > span + .anticon {
+  margin-left: 24px;
 }

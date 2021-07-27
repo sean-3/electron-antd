@@ -5,10 +5,8 @@ const routes: RouteConfig[] = [
     // redirect: { to: '/home?form=home' },
     windowOptions: {
       title: 'MulsanneTiktok',
-      width: 450,
-      height: 800,
-      minWidth: 450,
-      minHeight: 800,
+      width: 1080,
+      height: 1920,
     },
     createConfig: {
       showSidebar: true,

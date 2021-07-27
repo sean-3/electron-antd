@@ -6,10 +6,8 @@ const routes: RouteConfig[] = [
       single: false,
     },
     windowOptions: {
-      width: 450,
-      height: 800,
-      minWidth: 450,
-      minHeight: 800,
+      width: 1080,
+      height: 1920,
     },
   },
 ]

@@ -27,7 +27,7 @@ const buildVideoIndexArray = (length: number, range: number, currentArray: numbe
   return tempArray
 }
 
-const INIT_VIDEO_NUMBER = 3
+const INIT_VIDEO_NUMBER = 2
 
 const VIDEOS_PATH = `${path.join(remote.app.getPath('documents'), 'mulsanne')}`
 
@@ -37,17 +37,19 @@ const Home: React.FC = () => {
   const [activeIndex, setActiveIndex] = React.useState<number>(0)
   const [activePlaying, setActivePlaying] = React.useState<boolean>(true)
   const [visible, setVisible] = React.useState<boolean>(false)
+  const [closable, setClosable] = React.useState<boolean>(true)
 
   React.useEffect(() => {
     fs.readdir(VIDEOS_PATH, (_: any, files: string[]) => {
-      setShowVideoIndexArray(buildVideoIndexArray(INIT_VIDEO_NUMBER, files.length))
-      setAllVideoFileNames(files.filter((item) => item.indexOf('mov') !== -1))
+      const filterFiles = files.filter((item) => item.indexOf('mp4') !== -1)
+      setShowVideoIndexArray(buildVideoIndexArray(INIT_VIDEO_NUMBER, filterFiles.length))
+      setAllVideoFileNames(filterFiles)
     })
   }, [])
 
   const hanldeSubmit = (fileName: string) => {
     setAllVideoFileNames((preFileNames) => [...preFileNames, fileName])
-    setVisible(false)
+    closeDrawer()
   }
 
   const settings = {
@@ -58,6 +60,8 @@ const Home: React.FC = () => {
     draggable: true,
     adaptiveHeight: true,
     infinite: false,
+    autoplay: true,
+    autoplaySpeed: 10000,
     className: 'video-slider',
     afterChange: (index: number) => {
       setActivePlaying(true)
@@ -68,25 +72,32 @@ const Home: React.FC = () => {
           randomVideoIndex(preArray, allVideoFileNames.length),
         ])
       }
-      // if (index + 1 === showVideoCount) {
-      //   setActiveIndex(activeIndex - 3)
-      //   setShowVideoIds(buildVideoIdArray(allVideoCount, showVideoCount, showVideoIds.slice(4, 7)))
-      // } else {
-      //   setActiveIndex(index)
-      // }
     },
+  }
+
+  const closeDrawer = () => {
+    setVisible(false)
+    setActivePlaying(true)
   }
 
   return (
     <div className="layout-padding">
+      <div className="banner-icon">
+        <img src="assets/app-icon/logo@2x.png" alt="logo" width="400px" height="auto" />
+        <img src="assets/app-icon/与我同行@2x.png" alt="slogen" width="240px" height="auto" />
+      </div>
       {allVideoFileNames.length > 0 && (
         <Slider {...settings} initialSlide={activeIndex}>
           {showVideoIndexArray.map((item, index) => {
             return (
-              <div className="slider-item" key={item} onClick={() => setActivePlaying((preState) => !preState)}>
+              <div
+                className="slider-item"
+                key={item}
+                // onClick={() => setActivePlaying((preState) => !preState)}
+              >
                 <ReactPlayer
-                  width="100%"
-                  height="100%"
+                  width={800}
+                  height={1430}
                   url={`atom:///${VIDEOS_PATH}/${allVideoFileNames[item]}`}
                   loop
                   playing={activePlaying && index === activeIndex}
@@ -113,13 +124,13 @@ const Home: React.FC = () => {
       {visible && (
         <Drawer
           placement="bottom"
-          closable
+          closable={closable}
           visible={visible}
           bodyStyle={{ padding: 0 }}
           height="100%"
-          onClose={() => setVisible(false)}
+          onClose={closeDrawer}
         >
-          <Recorder onSubmit={hanldeSubmit} />
+          <Recorder onSubmit={hanldeSubmit} setClosable={setClosable} />
         </Drawer>
       )}
     </div>

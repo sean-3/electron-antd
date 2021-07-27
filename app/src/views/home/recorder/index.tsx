@@ -3,14 +3,11 @@ import { Button } from 'antd'
 import { VideoCameraFilled, UploadOutlined } from '@ant-design/icons'
 import { useReactMediaRecorder } from 'react-media-recorder'
 import Slider from 'react-slick'
+import ReactAudioPlayer from 'react-audio-player'
 import '@brainhubeu/react-carousel/lib/style.css'
 import '@/src/utils/preload-get-display-media-polyfill.js'
 import Timer from './timer'
 import './style.less'
-
-type Props = {
-  onSubmit: (fileName: string) => void
-}
 
 const VideoPreview = ({ stream }: { stream: MediaStream | null }) => {
   const videoRef = React.useRef<HTMLVideoElement>(null)
@@ -22,10 +19,16 @@ const VideoPreview = ({ stream }: { stream: MediaStream | null }) => {
 
 const bgTemplates = [0, 1, 2, 3, 4]
 
+type Props = {
+  onSubmit: (fileName: string) => void
+  setClosable: (status: boolean) => void
+}
+
 const Recorder: React.FC<Props> = React.memo((props: Props) => {
   const { startRecording, stopRecording, mediaBlobUrl, clearBlobUrl } = useReactMediaRecorder({
     screen: true,
   })
+  const [templateIndex, setTemplateIndex] = React.useState<number>(0)
   const { previewStream } = useReactMediaRecorder({ video: true })
   const [viewStatus, setViewStatus] = React.useState<string>('idle')
 
@@ -39,9 +42,16 @@ const Recorder: React.FC<Props> = React.memo((props: Props) => {
     arrows: false,
     adaptiveHeight: true,
     infinite: false,
-    className: 'video-slider',
+    className: 'gif-slider',
     customPaging: function (i: number) {
-      return <a className="template-item">{i}</a>
+      return (
+        <a className="template-item">
+          <img key={i} src={`assets/template/poster/${i}.png`} alt="poster" width="100%" height="100%" />
+        </a>
+      )
+    },
+    beforeChange: (_preIndex: number, nextIndex: number) => {
+      setTemplateIndex(nextIndex)
     },
   }
 
@@ -62,8 +72,16 @@ const Recorder: React.FC<Props> = React.memo((props: Props) => {
         view: window,
       })
     )
-    props.onSubmit((fileName as unknown) as string)
+    props.onSubmit((`${fileName}.mp4` as unknown) as string)
   }
+
+  React.useEffect(() => {
+    if (viewStatus === 'pending' || viewStatus === 'recording') {
+      props.setClosable(false)
+    } else {
+      props.setClosable(true)
+    }
+  }, [viewStatus])
 
   return (
     <div className="record-wrapper">
@@ -72,22 +90,27 @@ const Recorder: React.FC<Props> = React.memo((props: Props) => {
         <div className="video-preview">
           <video src={mediaBlobUrl} autoPlay loop />
           <div className="record-action">
-            <Button
-              icon={<VideoCameraFilled />}
-              size="large"
-              type="primary"
-              onClick={() => setViewStatus('idle')}
-            >
-              重新拍摄
-            </Button>
-            <Button
-              icon={<UploadOutlined />}
-              size="large"
-              type="primary"
-              onClick={() => downloadBlob(mediaBlobUrl)}
-            >
-              发布上传
-            </Button>
+            <div>
+              <Button
+                icon={<VideoCameraFilled />}
+                size="large"
+                type="primary"
+                onClick={() => setViewStatus('idle')}
+              >
+                重新拍摄
+              </Button>
+            </div>
+            <div>
+              <Button
+                icon={<UploadOutlined />}
+                size="large"
+                type="primary"
+                onClick={() => downloadBlob(mediaBlobUrl)}
+                style={{ marginTop: 30 }}
+              >
+                发布上传
+              </Button>
+            </div>
           </div>
         </div>
       )}
@@ -127,6 +150,13 @@ const Recorder: React.FC<Props> = React.memo((props: Props) => {
             开始录制
           </Button>
         </div>
+      )}
+
+      {viewStatus !== 'stopped' && (
+        <ReactAudioPlayer
+          src={`assets/template/mp3/${viewStatus === 'pending' ? 'pending' : templateIndex}.mp3`}
+          autoPlay
+        />
       )}
     </div>
   )
